@@ -2,7 +2,7 @@ import Head from 'next/head'
 import Image from 'next/image'
 import { connectToDatabase } from '../util/mongodb'
 
-export default function IndexMongo({ isConnected }) {
+export default function Home({ isConnected }) {
   return (
     <div className="container">
       <Head>
