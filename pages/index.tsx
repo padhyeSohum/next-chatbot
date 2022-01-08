@@ -1,5 +1,7 @@
 import Head from 'next/head'
 import Image from 'next/image'
+import ChatInput from '../src/chat-input';
+import Header from '../src/header';
 
 import styles from '@/pages/index.module.css'
 
@@ -12,6 +14,8 @@ export default function Home() {
       </Head>
 
       <main>
+      <Header onClose={() => console.log('onClose')}/>
+      <ChatInput onSubmit={(e) => console.log(e)}/>
         <h1 className={styles.title}>
           Welcome to <a href="https://nextjs.org">Next.js!</a>
         </h1>
