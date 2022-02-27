@@ -1,0 +1,37 @@
+.chatButton {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+}
+
+.chatComponent {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    min-width: 400px;
+}
+
+.historyList {
+    height: 500px;
+    overflow: auto;
+}
+
+.chatHeader {
+    display: flex;
+    background-color:cornflowerblue;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.chatBotTitle {
+    margin-left: 20px;
+}
+
+.userChat {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.botChat {
+    display: flex;
+}

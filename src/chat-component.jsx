@@ -5,23 +5,25 @@ import CloseIcon from '@mui/icons-material/Close';
 import ChatInput from './chat-input';
 import HistoryList from './history-list';
 import axios from 'axios';
+import styles from './chat-component.module.css';
+import Header from './header';
 
 const ChatComponent = ({onClose, ...props}) => {
 
     const [chatHistory, setChatHistory] = useState([]);
 
     return (
-        <div className="chatComponent">
+        <div className={styles.chatComponent}>
             <Paper>
-                <IconButton onClick={onClose}>
-                    <CloseIcon />
-                </IconButton>
+                <Header onClose={onClose}/>
                 <HistoryList history={chatHistory}/>
                 <ChatInput onSubmit=
                 {
                     async (e) => {
 
-                        setChatHistory([...chatHistory, {time: Date.now(), content: e, party: 'user'}])
+                        setChatHistory((chatHistory) => (
+                            [...chatHistory, {time: Date.now(), content: e, party: 'user'}]
+                        ))
                         
                         await axios.post(window.origin + "/api/askbot",
                             {
@@ -39,11 +41,19 @@ const ChatComponent = ({onClose, ...props}) => {
                                     showDialogue = true;
                                 }
 
+                                setChatHistory((chatHistory) => (
+                                    [...chatHistory, {time: Date.now(), content: botReply, party: 'bot'}]
+                                ))
                                 
-
-                                setChatHistory([...chatHistory, {time: Date.now(), content: botReply, party: 'bot'}])
-                                console.log(chatHistory);
-                        })
+                                // console.log(...chatHistory);
+                                // if (!chatHistory) {
+                                //     setChatHistory([{time: Date.now(), content: botReply, party: 'bot'}])
+                                // }
+                                // else {
+                                //     setChatHistory([...chatHistory, {time: Date.now(), content: botReply, party: 'bot'}])
+                                // }
+                            }
+                        )
                     }
                 }/>
             </Paper>
@@ -53,7 +63,7 @@ const ChatComponent = ({onClose, ...props}) => {
 
 const handleInput = (userInput) => {
 
-    axios.post(window.origin + "/api/askbot2",
+    axios.post(window.origin + "/api/askbot",
             {
                 question: userInput
             }).then((response) => {
@@ -89,8 +99,10 @@ const handleInput = (userInput) => {
 
 
 /*
-1. connect to mongoDB
-2. chatHistory styling
+1. Add fuzzy matching w/ mongoDB
+2. Integrate and test submit-answer
+3. polish UI
+4. Publish to vercel
 */
 
 export default ChatComponent;
