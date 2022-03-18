@@ -8,11 +8,10 @@
     position: fixed;
     bottom: 20px;
     right: 20px;
-    min-width: 400px;
+    width: 400px;
 }
 
 .historyList {
-    height: 500px;
     overflow: auto;
 }
 
@@ -30,8 +29,12 @@
 .userChat {
     display: flex;
     justify-content: flex-end;
+    align-items: center;
+    max-width: 400px;
 }
 
 .botChat {
     display: flex;
+    align-items: center;
+    max-width: 400px;
 }

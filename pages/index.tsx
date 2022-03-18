@@ -4,41 +4,47 @@ import ChatInput from '../src/chat-input';
 import Header from '../src/header';
 import ChatButton from '../src/chat-button';
 import ChatComponent from '../src/chat-component';
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
+import AppContext from '../src/appcontext';
 
 import styles from '@/pages/index.module.css'
 
 export default function Home() {
 
-  const [chatStarted, setChatStarted] = useState(false);  
-  return (
-    <div className={styles.container}>
-      <Head>
-        <title>Next Chatbot</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+    const context = useContext(AppContext);
 
-      <main>
-        
-        {!chatStarted && <ChatButton onSubmit={() => setChatStarted(true)}/>}
+    if (context === null) {
+        return;
+    }
 
-        {chatStarted && <ChatComponent onClose={() => setChatStarted(false)}/>}
+    return (
+        <div className={styles.container}>
+        <Head>
+            <title>Next Chatbot</title>
+            <link rel="icon" href="/favicon.ico" />
+        </Head>
 
-        <h1>TEST SITE</h1>
-        <br/><br/><br/><br/><br/>
-        <h1>Background main page</h1>
-        <br/><br/><br/><br/><br/><br/>
-        <br/><br/><br/><br/><br/>
-        <h1>Background main page</h1>
-        <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
-        <h1>Background main page</h1>
-        <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
-        <h1>Background main page</h1>
-        <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
-      </main>
+        <main>
+            
+            {!context.state.chatStarted && <ChatButton onSubmit={() => context.setChatStarted(true)}/>}
 
-      <footer className={styles.footer}>
-      </footer>
-    </div>
-  )
+            {context.state.chatStarted && <ChatComponent onClose={() => context.setChatStarted(false)}/>}
+
+            <h1>TEST SITE</h1>
+            <br/><br/><br/><br/><br/>
+            <h1>Background main page</h1>
+            <br/><br/><br/><br/><br/><br/>
+            <br/><br/><br/><br/><br/>
+            <h1>Background main page</h1>
+            <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+            <h1>Background main page</h1>
+            <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+            <h1>Background main page</h1>
+            <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+        </main>
+
+        <footer className={styles.footer}>
+        </footer>
+        </div>
+    )
 }

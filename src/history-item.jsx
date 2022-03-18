@@ -8,7 +8,7 @@ const HistoryItem = ({historyItem, ...props}) => {
     if (historyItem.party === 'user') {
         return (
             <div className = {styles.userChat} key={historyItem.time}>
-                <Paper sx={{margin: 1, width: 'fit-content', bgcolor: 'lightgray'}}>{historyItem.content}<small>{moment(historyItem.time).format('hh:mm:ss a')}</small></Paper>
+                <Paper sx={{margin: 1, padding: 0.75, width: 'fit-content', bgcolor: 'lightgray'}}>{historyItem.content}</Paper>
                 <Avatar>YOU</Avatar>
             </div>
         );
@@ -18,7 +18,7 @@ const HistoryItem = ({historyItem, ...props}) => {
         return (
             <div className = {styles.botChat} key={historyItem.time}>
                 <Avatar>BOT</Avatar>
-                <Paper sx={{margin: 1, width: 'fit-content', bgcolor: 'lightgray'}}>{historyItem.content}<small>{moment(historyItem.time).format('hh:mm:ss a')}</small></Paper>
+                <Paper sx={{margin: 1, padding: 0.75, width: 'fit-content', bgcolor: 'lightgray'}}>{historyItem.content}</Paper>
             </div>
         );
     }

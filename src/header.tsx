@@ -10,7 +10,7 @@ const Header = ({onClose, ...props}: HeaderProps) => {
     return (
         <div className={styles.chatHeader}>
             <div>
-                <h2 className = {styles.chatBotTitle}>Meet the Chat Bot</h2>
+                <h4 className = {styles.chatBotTitle}>Meet the Chat Bot</h4>
             </div>
             <div>
                 <IconButton sx={{marginRight: 2}} onClick={ (e) => onChatClose(e, onClose)}>

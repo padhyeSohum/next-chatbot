@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
 import { Paper, TextField, IconButton } from '@mui/material'
 import SendIcon from '@mui/icons-material/Send';
 import { withStyles } from '@mui/styles';
+import AppContext from './appcontext';
 
 const styles = {
     paper: {
         display: 'flex',
-        margin: 10
+        padding: 10
     },
     userInput: {
         width: 450
@@ -25,7 +26,11 @@ interface ChatInputProps{onSubmit?: (chatQuery) => void;}
 
 const ChatInput = ({onSubmit, ...props}: ChatInputProps) => {
 
-    const [chatQuery, setChatQuery] = useState('')
+    const context = React.useContext(AppContext);
+
+    if (context === null) {
+        return;
+    }
 
     return (
         <div>
@@ -38,11 +43,11 @@ const ChatInput = ({onSubmit, ...props}: ChatInputProps) => {
                     // defaultValue=""
                     variant="outlined"
                     className={props.classes.userInput}
-                    value={ chatQuery }
-                    onChange={ (e) => setChatQuery(e.target.value) }
+                    value={ context.state.chatQuery }
+                    onChange={ (e) => context.setChatQuery(e.target.value) }
                 />
 
-                <IconButton onClick={ (e) => onSubmit(chatQuery) } className={props.classes.sendButton}>
+                <IconButton onClick={ (e) => onSubmit(context.state.chatQuery) } className={props.classes.sendButton}>
                     <SendIcon />
                 </IconButton>
 

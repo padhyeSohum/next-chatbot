@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
 import { Paper } from '@mui/material';
 import { IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
@@ -7,23 +7,30 @@ import HistoryList from './history-list';
 import axios from 'axios';
 import styles from './chat-component.module.css';
 import Header from './header';
+import AppContext from './appcontext';
 
 const ChatComponent = ({onClose, ...props}) => {
 
-    const [chatHistory, setChatHistory] = useState([]);
+    const context = React.useContext(AppContext);
+
+    if (context === null) {
+        return;
+    }
 
     return (
         <div className={styles.chatComponent}>
-            <Paper>
+            <Paper elevation = "7">
                 <Header onClose={onClose}/>
-                <HistoryList history={chatHistory}/>
+                <HistoryList history={context.state.chatHistory}/>
                 <ChatInput onSubmit=
                 {
                     async (e) => {
 
-                        setChatHistory((chatHistory) => (
+                        context.setChatHistory((chatHistory) => (
                             [...chatHistory, {time: Date.now(), content: e, party: 'user'}]
                         ))
+
+                        context.setChatQuery('');
                         
                         await axios.post(window.origin + "/api/askbot",
                             {
@@ -41,17 +48,9 @@ const ChatComponent = ({onClose, ...props}) => {
                                     showDialogue = true;
                                 }
 
-                                setChatHistory((chatHistory) => (
+                                context.setChatHistory((chatHistory) => (
                                     [...chatHistory, {time: Date.now(), content: botReply, party: 'bot'}]
-                                ))
-                                
-                                // console.log(...chatHistory);
-                                // if (!chatHistory) {
-                                //     setChatHistory([{time: Date.now(), content: botReply, party: 'bot'}])
-                                // }
-                                // else {
-                                //     setChatHistory([...chatHistory, {time: Date.now(), content: botReply, party: 'bot'}])
-                                // }
+                                ))                                
                             }
                         )
                     }
@@ -61,39 +60,39 @@ const ChatComponent = ({onClose, ...props}) => {
     );
 }
 
-const handleInput = (userInput) => {
+// const handleInput = (userInput) => {
 
-    axios.post(window.origin + "/api/askbot",
-            {
-                question: userInput
-            }).then((response) => {
-                let botReply = "sorry, I don't know about this."
-                let showDialogue;
+//     axios.post(window.origin + "/api/askbot",
+//             {
+//                 question: userInput
+//             }).then((response) => {
+//                 let botReply = "sorry, I don't know about this."
+//                 let showDialogue;
 
-                if (response.data != "") {
-                    showDialogue = false;
-                    botReply = response.data
-                }
+//                 if (response.data != "") {
+//                     showDialogue = false;
+//                     botReply = response.data
+//                 }
 
-                else {
-                    showDialogue = true;
-                }
+//                 else {
+//                     showDialogue = true;
+//                 }
 
-                this.setState({
-                    currentUserInput: '',
-                    questionAsked: this.state.currentUserInput,
-                    history: [...this.state.history, {
-                        party: 'bot',
-                        time: Date.now(),
-                        content: botReply
-                    }],
-                    showUserDialogue: showDialogue
-                })
-            })
-        event.preventDefault();
-    intentsRepo.getData(userInput);
-    // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-}
+//                 this.setState({
+//                     currentUserInput: '',
+//                     questionAsked: this.state.currentUserInput,
+//                     history: [...this.state.history, {
+//                         party: 'bot',
+//                         time: Date.now(),
+//                         content: botReply
+//                     }],
+//                     showUserDialogue: showDialogue
+//                 })
+//             })
+//         event.preventDefault();
+//     intentsRepo.getData(userInput);
+//     // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
+// }
 
 
 

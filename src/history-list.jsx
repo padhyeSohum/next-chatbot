@@ -6,15 +6,17 @@ import { Paper } from '@mui/material';
 const HistoryList = ({history, ...props}) => {
 
     return (
-        <div className={styles.historyList}>
-            <Paper sx={{margin: 1, minHeight: 500}}>
+        
+        <Paper sx={{margin: 1, padding: 1, height: 400}}>
+            <div className={styles.historyList}>
                 {
                     history.map(historyItem => {
                         return <HistoryItem historyItem={historyItem} key={historyItem.time}/>;
                     })
                 }
-            </Paper>
-        </div>
+            </div>
+        </Paper>
+        
     );
 }
 
