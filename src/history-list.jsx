@@ -11,7 +11,7 @@ const HistoryList = ({history, ...props}) => {
             <div className={styles.historyList}>
                 {
                     history.map(historyItem => {
-                        return <HistoryItem historyItem={historyItem} key={historyItem.time}/>;
+                        return <HistoryItem historyItem={historyItem} key={historyItem.itemID}/>;
                     })
                 }
             </div>

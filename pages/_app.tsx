@@ -16,15 +16,22 @@ interface MyAppProps extends AppProps {
   emotionCache: EmotionCache
 }
 
+interface ChatItem {
+    itemID: string,
+    chatTime: Date,
+    userIntent: string,
+    botReply?: string
+}
+
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
 
 export default function MyApp({ Component, emotionCache, pageProps }: MyAppProps) {
     emotionCache = clientSideEmotionCache;
 
-    const [chatStarted, setChatStarted] = useState(false);
-    const [chatHistory, setChatHistory] = useState([]);
-    const [chatQuery, setChatQuery] = useState('')
+    const [chatStarted, setChatStarted] = useState<boolean>(false);
+    const [chatHistory, setChatHistory] = useState<ChatItem[]>([]);
+    const [chatQuery, setChatQuery] = useState<string>('')
 
     return (
         <CacheProvider value={emotionCache}>

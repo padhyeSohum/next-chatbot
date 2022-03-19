@@ -45,6 +45,11 @@ const ChatInput = ({onSubmit, ...props}: ChatInputProps) => {
                     className={props.classes.userInput}
                     value={ context.state.chatQuery }
                     onChange={ (e) => context.setChatQuery(e.target.value) }
+                    onKeyPress={ (e) => {
+                        if (e.key === "Enter") {
+                            onSubmit(context.state.chatQuery)
+                        }
+                    } }
                 />
 
                 <IconButton onClick={ (e) => onSubmit(context.state.chatQuery) } className={props.classes.sendButton}>

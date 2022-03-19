@@ -8,6 +8,7 @@ import axios from 'axios';
 import styles from './chat-component.module.css';
 import Header from './header';
 import AppContext from './appcontext';
+import { v4 as uuidv4 } from 'uuid';
 
 const ChatComponent = ({onClose, ...props}) => {
 
@@ -19,17 +20,19 @@ const ChatComponent = ({onClose, ...props}) => {
 
     return (
         <div className={styles.chatComponent}>
-            <Paper elevation = "7">
+            <Paper elevation = {7}>
                 <Header onClose={onClose}/>
                 <HistoryList history={context.state.chatHistory}/>
                 <ChatInput onSubmit=
                 {
                     async (e) => {
 
-                        context.setChatHistory((chatHistory) => (
-                            [...chatHistory, {time: Date.now(), content: e, party: 'user'}]
-                        ))
+                        const newChatHistory = context.state.chatHistory.slice();
+                        const newItemID = uuidv4();
 
+                        newChatHistory.push({itemID: newItemID, chatTime: Date.now(), userIntent: e, botReply: null})
+
+                        context.setChatHistory(newChatHistory);
                         context.setChatQuery('');
                         
                         await axios.post(window.origin + "/api/askbot",
@@ -48,9 +51,11 @@ const ChatComponent = ({onClose, ...props}) => {
                                     showDialogue = true;
                                 }
 
-                                context.setChatHistory((chatHistory) => (
-                                    [...chatHistory, {time: Date.now(), content: botReply, party: 'bot'}]
-                                ))                                
+                                const currentItem = newChatHistory.find(c => c.itemID === newItemID)
+                                
+                                currentItem.botReply = botReply;
+
+                                context.setChatHistory([...newChatHistory]);
                             }
                         )
                     }
@@ -59,43 +64,6 @@ const ChatComponent = ({onClose, ...props}) => {
         </div>
     );
 }
-
-// const handleInput = (userInput) => {
-
-//     axios.post(window.origin + "/api/askbot",
-//             {
-//                 question: userInput
-//             }).then((response) => {
-//                 let botReply = "sorry, I don't know about this."
-//                 let showDialogue;
-
-//                 if (response.data != "") {
-//                     showDialogue = false;
-//                     botReply = response.data
-//                 }
-
-//                 else {
-//                     showDialogue = true;
-//                 }
-
-//                 this.setState({
-//                     currentUserInput: '',
-//                     questionAsked: this.state.currentUserInput,
-//                     history: [...this.state.history, {
-//                         party: 'bot',
-//                         time: Date.now(),
-//                         content: botReply
-//                     }],
-//                     showUserDialogue: showDialogue
-//                 })
-//             })
-//         event.preventDefault();
-//     intentsRepo.getData(userInput);
-//     // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-// }
-
-
-
 
 /*
 1. Add fuzzy matching w/ mongoDB
