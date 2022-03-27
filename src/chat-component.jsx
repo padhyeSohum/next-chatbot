@@ -34,6 +34,8 @@ const ChatComponent = ({onClose, ...props}) => {
 
                         context.setChatHistory(newChatHistory);
                         context.setChatQuery('');
+
+                        context.setServerQueryInProgress(true);
                         
                         await axios.post(window.origin + "/api/askbot",
                             {
@@ -57,7 +59,9 @@ const ChatComponent = ({onClose, ...props}) => {
 
                                 context.setChatHistory([...newChatHistory]);
                             }
-                        )
+                        ).finally(() => {
+                            context.setServerQueryInProgress(false);
+                        })
                     }
                 }/>
             </Paper>

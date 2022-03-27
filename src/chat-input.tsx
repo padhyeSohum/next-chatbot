@@ -50,6 +50,8 @@ const ChatInput = ({onSubmit, ...props}: ChatInputProps) => {
                             onSubmit(context.state.chatQuery)
                         }
                     } }
+                    disabled={context.state.serverQueryInProgress}
+                    autoFocus={true}
                 />
 
                 <IconButton onClick={ (e) => onSubmit(context.state.chatQuery) } className={props.classes.sendButton}>

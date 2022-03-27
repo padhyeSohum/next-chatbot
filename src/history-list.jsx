@@ -7,7 +7,7 @@ const HistoryList = ({history, ...props}) => {
 
     return (
         
-        <Paper sx={{margin: 1, padding: 1, height: 400}}>
+        <Paper sx={{margin: 1, padding: 1, height: 400, overflow: "auto"}}>
             <div className={styles.historyList}>
                 {
                     history.map(historyItem => {
