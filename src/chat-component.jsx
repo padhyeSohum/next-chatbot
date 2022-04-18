@@ -1,7 +1,5 @@
 import React, { useContext } from 'react';
-import { Paper } from '@mui/material';
-import { IconButton } from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
+import { Paper, Snackbar } from '@mui/material';
 import ChatInput from './chat-input';
 import HistoryList from './history-list';
 import axios from 'axios';
@@ -9,10 +7,12 @@ import styles from './chat-component.module.css';
 import Header from './header';
 import AppContext from './appcontext';
 import { v4 as uuidv4 } from 'uuid';
+import UserDialogue from './user-dialogue';
+import SubmitAnswer from './submit-answer';
 
 const ChatComponent = ({onClose, ...props}) => {
 
-    const context = React.useContext(AppContext);
+    const context = useContext(AppContext);
 
     if (context === null) {
         return;
@@ -20,9 +20,11 @@ const ChatComponent = ({onClose, ...props}) => {
 
     return (
         <div className={styles.chatComponent}>
-            <Paper elevation = {7}>
+            <Paper elevation = {7} sx={{borderRadius: '10px'}}>
                 <Header onClose={onClose}/>
                 <HistoryList history={context.state.chatHistory}/>
+                {context.state.questionNotInDb && <UserDialogue />}
+                {context.state.userUpdate && <SubmitAnswer />}
                 <ChatInput onSubmit=
                 {
                     async (e) => {
@@ -30,7 +32,7 @@ const ChatComponent = ({onClose, ...props}) => {
                         const newChatHistory = context.state.chatHistory.slice();
                         const newItemID = uuidv4();
 
-                        newChatHistory.push({itemID: newItemID, chatTime: Date.now(), userIntent: e, botReply: null})
+                        newChatHistory.unshift({itemID: newItemID, chatTime: Date.now(), userIntent: e, botReply: null})
 
                         context.setChatHistory(newChatHistory);
                         context.setChatQuery('');
@@ -41,16 +43,15 @@ const ChatComponent = ({onClose, ...props}) => {
                             {
                                 question: e
                             }).then((response) => {
-                                let botReply = "sorry, I don't know about this."
-                                let showDialogue;
+                                let botReply = "Sorry, I don't know about this."
 
                                 if (response.data != "") {
-                                    showDialogue = false;
+                                    context.setQuestionNotInDb(false)
                                     botReply = response.data
                                 }
 
                                 else {
-                                    showDialogue = true;
+                                    context.setQuestionNotInDb(true);
                                 }
 
                                 const currentItem = newChatHistory.find(c => c.itemID === newItemID)
@@ -63,8 +64,16 @@ const ChatComponent = ({onClose, ...props}) => {
                             context.setServerQueryInProgress(false);
                         })
                     }
+                    
                 }/>
             </Paper>
+            <Snackbar
+                open={context.state.userMessage != null}
+                autoHideDuration={2000}
+                onClose={() => {context.setUserMessage(null)}}
+                message={context.state.userMessage}
+            />
+
         </div>
     );
 }

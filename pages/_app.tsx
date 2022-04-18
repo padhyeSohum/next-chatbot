@@ -31,8 +31,11 @@ export default function MyApp({ Component, emotionCache, pageProps }: MyAppProps
 
     const [chatStarted, setChatStarted] = useState<boolean>(false);
     const [chatHistory, setChatHistory] = useState<ChatItem[]>([]);
-    const [chatQuery, setChatQuery] = useState<string>('')
+    const [chatQuery, setChatQuery] = useState<string>('');
     const [serverQueryInProgress, setServerQueryInProgress] = useState<boolean>(false);
+    const [userMessage, setUserMessage] = useState<string>(null);
+    const [questionNotInDb, setQuestionNotInDb] = useState<boolean>(false);
+    const [userUpdate, setUserUpdate] = useState<boolean>(false);
 
     return (
         <CacheProvider value={emotionCache}>
@@ -45,8 +48,8 @@ export default function MyApp({ Component, emotionCache, pageProps }: MyAppProps
             <CssBaseline />
             <AppContext.Provider value={
                 {
-                    state: {chatStarted, chatHistory, chatQuery, serverQueryInProgress}, 
-                    setChatStarted, setChatHistory, setChatQuery, setServerQueryInProgress
+                    state: {chatStarted, chatHistory, chatQuery, serverQueryInProgress, userMessage, questionNotInDb, userUpdate}, 
+                    setChatStarted, setChatHistory, setChatQuery, setServerQueryInProgress, setUserMessage, setQuestionNotInDb, setUserUpdate
                 }
             }>
                 <Component {...pageProps} />

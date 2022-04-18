@@ -13,6 +13,10 @@
 
 .historyList {
     overflow: auto;
+    height: 450px;
+    margin: 0 0 0 2px;
+    display: flex;
+    flex-direction: column-reverse;
 }
 
 .chatHeader {
@@ -20,6 +24,7 @@
     background-color:cornflowerblue;
     align-items: center;
     justify-content: space-between;
+    border-radius: 10px 10px 0 0;
 }
 
 .chatBotTitle {

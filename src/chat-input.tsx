@@ -7,10 +7,10 @@ import AppContext from './appcontext';
 const styles = {
     paper: {
         display: 'flex',
-        padding: 10
+        padding: 10,
     },
     userInput: {
-        width: 450
+        width: 450,
     },
     sendButton: {
         '&:hover': {
@@ -32,6 +32,8 @@ const ChatInput = ({onSubmit, ...props}: ChatInputProps) => {
         return;
     }
 
+    const isValidQuery: boolean = context.state.chatQuery != null && context.state.chatQuery.trim().length > 0;
+
     return (
         <div>
             <Paper className={props.classes.paper}>
@@ -47,14 +49,31 @@ const ChatInput = ({onSubmit, ...props}: ChatInputProps) => {
                     onChange={ (e) => context.setChatQuery(e.target.value) }
                     onKeyPress={ (e) => {
                         if (e.key === "Enter") {
-                            onSubmit(context.state.chatQuery)
+                            if (isValidQuery) {
+                                context.setUserMessage(null);
+                                onSubmit(context.state.chatQuery)
+                            }
+                            else {
+                                context.setUserMessage('Please enter a valid question.')
+                            }
                         }
                     } }
                     disabled={context.state.serverQueryInProgress}
                     autoFocus={true}
                 />
 
-                <IconButton onClick={ (e) => onSubmit(context.state.chatQuery) } className={props.classes.sendButton}>
+                <IconButton onClick=
+                { (e) => {
+                    if (isValidQuery) {
+                        context.setUserMessage(null);
+                        onSubmit(context.state.chatQuery)
+                    }
+                    else {
+                        context.setUserMessage('Please enter a valid question.')
+                    }
+                }}
+
+                className={props.classes.sendButton}>
                     <SendIcon />
                 </IconButton>
 
