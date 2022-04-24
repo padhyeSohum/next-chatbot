@@ -1,8 +1,9 @@
 import React, { useContext } from 'react';
 import AppContext from './appcontext';
 import { Button } from '@Mui/material';
+import styles from './chat-component.module.css';
 
-const UserDialogue = () => {
+const UserDialogue = (props) => {
 
     const context = useContext(AppContext);
 
@@ -21,14 +22,17 @@ const UserDialogue = () => {
     }
 
     return (
-        <>
-            <Button onClick = {handleYes} variant="contained" color="primary">
-                Yes
-            </Button>
-            <Button onClick = {handleNo} variant="contained" color="secondary">
-                No
-            </Button>
-        </>
+        <div className={styles.userDialogue}>
+            <div>{props.message}</div>
+            <div className={styles.userDialogueButtons}>
+                <Button onClick = {handleYes} variant="contained" color="primary">
+                    Yes
+                </Button>
+                <Button onClick = {handleNo} variant="contained" color="secondary">
+                    No
+                </Button>
+            </div>
+        </div>
     );
 }
 

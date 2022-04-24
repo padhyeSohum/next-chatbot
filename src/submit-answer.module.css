@@ -1,0 +1,15 @@
+.submitAnswer {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    padding: 10px;
+    margin: 10px;
+    border: solid 0.05rem;
+    border-radius: 10px;
+    background-color: floralwhite;
+}
+
+.submitAnswerButtonsContainer {
+    display: flex;
+    justify-content: space-evenly;
+}

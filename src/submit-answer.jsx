@@ -2,8 +2,9 @@ import axios from 'axios';
 import React, { useState, useContext }from 'react';
 import AppContext from './appcontext';
 import { TextField,  Button } from '@mui/material';
+import styles from './submit-answer.module.css';
 
-const SubmitAnswer = () => {
+const SubmitAnswer = (props) => {
 
     const context = useContext(AppContext);
 
@@ -19,7 +20,7 @@ const SubmitAnswer = () => {
     const [validationStatusAnswer, setValidationStatusAnswer] = useState(false);
     const [overallValidation, setOverallValidation] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
-    const [questionAsked, setQuestionAsked] = useState(context.state.chatQuery);
+    const [questionAsked, setQuestionAsked] = useState(props.ongoingQuery);
 
 
     const handleChangeQuestion = (event) => {
@@ -45,9 +46,8 @@ const SubmitAnswer = () => {
         setQuestionAsked(tempQuestion);
         setHelperTextQuestion(tempHelperTextQuestion);
         setValidationStatusQuestion(tempValidationStatusQuestion);
-        setOverallValidation()
+        setOverallValidation(tempValidationStatusQuestion && validationStatusAnswer)
 
-        return tempValidationStatusQuestion;
     }
 
     const handleChangeAnswer = (event) => {
@@ -73,18 +73,8 @@ const SubmitAnswer = () => {
         setAnswerToQuestion(tempAnswer);
         setHelperTextAnswer(tempHelperTextAnswer);
         setValidationStatusAnswer(tempValidationStatusAnswer);
-        setOverallValidation(true); // TODO
+        setOverallValidation(tempValidationStatusAnswer && validationStatusQuestion);
 
-        return tempValidationStatusAnswer;
-    }
-
-    const checkValidation = () => {
-        let tempOverallValidation = false;
-
-        if (this.handleChangeQuestion() === true && this.handleChangeAnswer() === true) {
-            tempOverallValidation = true;
-        }
-        setOverallValidation(tempOverallValidation);
     }
 
     const handleOnSubmit = () => {
@@ -93,28 +83,36 @@ const SubmitAnswer = () => {
                 question: questionAsked,
                 answer: answerToQuestion
 
-            }).then((response) => {
-                setSubmissionResponse(response.data);
-                setIsSuccess(true);
-
+            }
+        ).then((response) => {
+                context.setUserMessage('Answer successfully submitted!');
                 // this.props.onSubmitAnswer(true);
                 
             }
         ).catch((error) => {
-            setIsSuccess(false);
-            this.props.onSubmitAnswer(false);
-        })
+                context.setUserMessage('There was a problem in submitting your answer.')
+            }
+            ).finally(() => {
+                context.setUserUpdate(false);
+            }) 
 
     }
 
+    const handleOnCancel = () => {
+        context.setUserUpdate(false);
+    }
+
     return (
-        <div className = "submit-answer">
-            <TextField error = {!validationStatusQuestion} helperText = {helperTextQuestion} required label = "Your Question" defaultValue = {questionAsked} value = {questionAsked} variant = "outlined" onChange = {handleChangeQuestion}/>
-            <TextField error = {!validationStatusAnswer} helperText = {helperTextAnswer} required label = "Your Answer" defaultValue="" value = {answerToQuestion} variant = "outlined" onChange = {handleChangeAnswer} />
+        <div className = {styles.submitAnswer}>
+            <TextField error = {!validationStatusQuestion} helperText = {helperTextQuestion} sx={{}} required label = "Your Question" defaultValue = {questionAsked} value = {questionAsked} variant = "outlined" onChange = {handleChangeQuestion}/>
+            <TextField error = {!validationStatusAnswer} helperText = {helperTextAnswer} sx={{margin: "10px 0"}} required label = "Your Answer" defaultValue="" value = {answerToQuestion} variant = "outlined" onChange = {handleChangeAnswer} />
             {/* <input type = "text" className = "submit-answer-input" value = {this.props.questionAsked} readOnly/>
             <input type = "text" className = "submit-answer-input" value = {this.state.questionAsked} onChange = {this.handleChange} required /> */}
 
-            <Button disabled = {!overallValidation} onClick = {handleOnSubmit} variant = "contained" color = "primary">Submit</Button>
+            <div className={styles.submitAnswerButtonsContainer}>
+                <Button disabled = {!overallValidation} onClick = {handleOnSubmit} variant = "contained" color = "primary">Submit</Button>
+                <Button onClick = {handleOnCancel} variant = "contained" color = "secondary">Cancel</Button>
+            </div>
             {/* <button type = "button" onClick = {this.handleOnSubmit}>Submit</button> */}
         </div>
     )

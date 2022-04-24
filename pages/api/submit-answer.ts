@@ -1,12 +1,12 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { getData } from "../../src/intents-repo";
+import { addData } from "../../src/intents-repo";
 
 export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse
 ) {
 
-    const results = await getData(req.body.question);
+    const results = await addData({intent: req.body.question, reply: req.body.answer});
     console.log(req.body.question);
     
     if (results.length > 0) {
@@ -17,4 +17,6 @@ export default async function handler(
     }
 
     console.log(results)
+
+
 }

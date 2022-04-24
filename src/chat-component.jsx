@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Paper, Snackbar } from '@mui/material';
 import ChatInput from './chat-input';
 import HistoryList from './history-list';
@@ -12,6 +12,8 @@ import SubmitAnswer from './submit-answer';
 
 const ChatComponent = ({onClose, ...props}) => {
 
+    const [ongoingQuery, setOngoingQuery] = useState('');
+
     const context = useContext(AppContext);
 
     if (context === null) {
@@ -23,8 +25,8 @@ const ChatComponent = ({onClose, ...props}) => {
             <Paper elevation = {7} sx={{borderRadius: '10px'}}>
                 <Header onClose={onClose}/>
                 <HistoryList history={context.state.chatHistory}/>
-                {context.state.questionNotInDb && <UserDialogue />}
-                {context.state.userUpdate && <SubmitAnswer />}
+                {context.state.questionNotInDb && <UserDialogue message="Do you want to submit an answer?"/>}
+                {context.state.userUpdate && <SubmitAnswer ongoingQuery={ongoingQuery}/>}
                 <ChatInput onSubmit=
                 {
                     async (e) => {
@@ -35,6 +37,7 @@ const ChatComponent = ({onClose, ...props}) => {
                         newChatHistory.unshift({itemID: newItemID, chatTime: Date.now(), userIntent: e, botReply: null})
 
                         context.setChatHistory(newChatHistory);
+                        setOngoingQuery(e);
                         context.setChatQuery('');
 
                         context.setServerQueryInProgress(true);
