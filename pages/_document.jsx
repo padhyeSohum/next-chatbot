@@ -15,7 +15,7 @@ import theme from "../src/theme";
 export default class MyDocument extends Document {
   // `getInitialProps` belongs to `_document` (instead of `_app`),
   // it's compatible with static-site generation (SSG).
-  static async getInitialProps(ctx: DocumentContext) {
+  static async getInitialProps(ctx) {
     
 
     const originalRenderPage = ctx.renderPage;

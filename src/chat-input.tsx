@@ -1,26 +1,26 @@
 import React, { useContext } from 'react';
 import { Paper, TextField, IconButton } from '@mui/material'
 import SendIcon from '@mui/icons-material/Send';
-import { withStyles } from '@mui/styles';
+// import { withStyles } from '@mui/styles';
 import AppContext from './appcontext';
 
-const styles = {
-    paper: {
-        display: 'flex',
-        padding: 10,
-    },
-    userInput: {
-        width: 450,
-    },
-    sendButton: {
-        '&:hover': {
-            color: "#12c210"
-        },
-        '&:active': {
-            color: "#12c210"
-        }
-    }
-}
+// const styles = {
+//     paper: {
+//         display: 'flex',
+//         padding: 10,
+//     },
+//     userInput: {
+//         width: 450,
+//     },
+//     sendButton: {
+//         '&:hover': {
+//             color: "#12c210"
+//         },
+//         '&:active': {
+//             color: "#12c210"
+//         }
+//     }
+// }
 
 interface ChatInputProps{onSubmit?: (chatQuery) => void;}
 
@@ -36,7 +36,7 @@ const ChatInput = ({onSubmit, ...props}: ChatInputProps) => {
 
     return (
         <div>
-            <Paper className={props.classes.paper}>
+            <Paper sx={{"display": "flex", "padding": "10px"}}>
 
                 <TextField
                     required
@@ -44,7 +44,7 @@ const ChatInput = ({onSubmit, ...props}: ChatInputProps) => {
                     label="Question"
                     // defaultValue=""
                     variant="outlined"
-                    className={props.classes.userInput}
+                    sx={{"width": "450px"}}
                     value={ context.state.chatQuery }
                     onChange={ (e) => context.setChatQuery(e.target.value) }
                     onKeyPress={ (e) => {
@@ -73,7 +73,7 @@ const ChatInput = ({onSubmit, ...props}: ChatInputProps) => {
                     }
                 }}
 
-                className={props.classes.sendButton}>
+                sx={{"&hover": {"color": "#12c210"}, "&active": {"color": "#12c210"}}}>
                     <SendIcon />
                 </IconButton>
 
@@ -82,4 +82,4 @@ const ChatInput = ({onSubmit, ...props}: ChatInputProps) => {
     );
 }
 
-export default withStyles(styles)(ChatInput);
+export default ChatInput;
