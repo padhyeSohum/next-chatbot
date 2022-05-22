@@ -15,4 +15,5 @@
 [DONE] 15. make chat automatically scroll down when a new message is added
 16. use a css transition to show the user when their message has been added rather than just adding it there
 [DONE] 17. tell user when their question isn't valid
-18. make submit-answer input boxes show helper text from the beginning
+[DONE] 18. make submit-answer input boxes show helper text from the beginning
+[DONE] 19. hide chat-input when submit-answer is open

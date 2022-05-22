@@ -27,6 +27,7 @@ const ChatComponent = ({onClose, ...props}) => {
                 <HistoryList history={context.state.chatHistory}/>
                 {context.state.questionNotInDb && <UserDialogue message="Do you want to submit an answer?"/>}
                 {context.state.userUpdate && <SubmitAnswer ongoingQuery={ongoingQuery}/>}
+                {!context.state.userUpdate && 
                 <ChatInput onSubmit=
                 {
                     async (e) => {
@@ -68,7 +69,7 @@ const ChatComponent = ({onClose, ...props}) => {
                         })
                     }
                     
-                }/>
+                }/>}
             </Paper>
             <Snackbar
                 open={context.state.userMessage != null}
