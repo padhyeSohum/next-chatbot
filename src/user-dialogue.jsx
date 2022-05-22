@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import AppContext from './appcontext';
-import { Button } from '@Mui/material';
+import { Button } from '@mui/material';
 import styles from './chat-component.module.css';
 
 const UserDialogue = (props) => {
